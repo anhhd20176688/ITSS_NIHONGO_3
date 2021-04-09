@@ -18,33 +18,31 @@ class TodoContainer extends Component {
   }
 
 
-
-  componentWillReceiveProps(nextProps) {
-    this.handleInitialize(nextProps.todo);
-  }
-
   renderAlert() {
     if (this.props.error) {
-      return (      
-        <div className="margin-top-25px">
-          <Alert bsStyle="danger">
-            <strong>Oops!</strong> {this.props.error}
-          </Alert>
-        </div>
+      return (
+          <div className="margin-top-25px">
+            <Alert bsStyle="danger">
+              <strong>Oops!</strong> {this.props.error}
+            </Alert>
+          </div>
       );
     }
   }
 
   render() {
     return (
-      <PageContainer>
-        <Portlet title="Todo">
-          <div>
-
-          </div>
-           {this.renderAlert()}         
-        </Portlet>
-      </PageContainer>
+        <PageContainer>
+          <Portlet title="Todo">
+            <div>
+              <TodoForm
+                  onSubmit={this.onSubmit.bind(this)}
+                  disableCompleted={!this.props.todo._id}
+              />
+            </div>
+            {this.renderAlert()}
+          </Portlet>
+        </PageContainer>
     );
   }
 }
@@ -57,7 +55,7 @@ TodoContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { 
+  return {
     todo: state.todos.todo,
     error: state.todos.error
   };
@@ -65,5 +63,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
 
-  initialize 
+  initialize
 })(TodoContainer);

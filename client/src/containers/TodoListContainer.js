@@ -16,14 +16,17 @@ class TodoListContainer extends Component {
       selectedRow: {}
     };
 
+
   }
 
   static contextTypes = {
     router: PropTypes.object
   };
 
+  componentWillMount() {
+    this.props.fetchTodos();
+  }
 
-  
   onRowSelect(selectedRow) {
     this.setState({ selectedRow }, () => {
       console.log(this.state.selectedRow)
@@ -31,51 +34,54 @@ class TodoListContainer extends Component {
   }
 
 
+
   renderAlert() {
     if (this.props.error) {
-      return (      
-        <div className="margin-top-25px">
-          <Alert bsStyle="danger">
-            <strong>Oops!</strong> {this.props.error}
-          </Alert>
-        </div>
+      return (
+          <div className="margin-top-25px">
+            <Alert bsStyle="danger">
+              <strong>Oops!</strong> {this.props.error}
+            </Alert>
+          </div>
       );
     }
   }
 
   render() {
     return (
-      <PageContainer>
-        <Portlet title="Todos">
-          <div className="row">
-            <div className="col-md-12">
-              <Grid 
-                data={this.props.todos} 
-                cells={todoCells}
-                onRowSelect={this.onRowSelect.bind(this)}
-                selectedRow={this.state.selectedRow}
-                objectKey="_id" 
-              />
-              <CrudButtons
-                editDisabled={!this.state.selectedRow._id}
-                deleteDisabled={!this.state.selectedRow._id} 
-              />
-              {this.renderAlert()}          
+        <PageContainer>
+          <Portlet title="Todos">
+            <div className="row">
+              <div className="col-md-12">
+                <Grid
+                    data={this.props.todos}
+                    cells={todoCells}
+                    onRowSelect={this.onRowSelect.bind(this)}
+                    selectedRow={this.state.selectedRow}
+                    objectKey="_id"
+                />
+                <CrudButtons
+
+                    editDisabled={!this.state.selectedRow._id}
+                    deleteDisabled={!this.state.selectedRow._id}
+                />
+                {this.renderAlert()}
+              </div>
             </div>
-          </div>
-        </Portlet>
-      </PageContainer>
+          </Portlet>
+        </PageContainer>
     );
-  }  
+  }
 }
 
 TodoListContainer.propTypes = {
   todos: PropTypes.array.isRequired,
+
   error: PropTypes.string
 }
 
 function mapStateToProps(state) {
-  return { 
+  return {
     todos: state.todos.all,
     error: state.todos.error
   };
