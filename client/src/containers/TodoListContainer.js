@@ -15,7 +15,7 @@ class TodoListContainer extends Component {
     this.state = {
       selectedRow: {},
     };
-
+    this.onNew = this.onNew.bind(this);
     this.onDelete = this.onDelete.bind(this);
   }
 
@@ -31,6 +31,10 @@ class TodoListContainer extends Component {
     this.setState({ selectedRow }, () => {
       console.log(this.state.selectedRow);
     });
+  }
+
+  onNew() {
+    this.context.router.push('/todo');
   }
 
   onDelete() {
@@ -64,6 +68,7 @@ class TodoListContainer extends Component {
                 objectKey="_id"
               />
               <CrudButtons
+                onNew={this.onNew} 
                 onDelete={this.onDelete}
                 editDisabled={!this.state.selectedRow._id}
                 deleteDisabled={!this.state.selectedRow._id}

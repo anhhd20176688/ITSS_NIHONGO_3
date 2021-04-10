@@ -6,9 +6,16 @@ import { Alert } from "react-bootstrap";
 import PageContainer from "../components/PageContainer";
 import Portlet from "../components/Portlet";
 import TodoForm from "../components/TodoForm";
-import { fetchTodo, deleteTodo } from "../actions/index";
+import { fetchTodo,createTodo, deleteTodo } from "../actions/index";
 
 class TodoContainer extends Component {
+  onSubmit(props) {
+    if (this.props.todo._id) {
+      return this.props.updateTodo(this.props.todo._id, props);
+    }
+    this.props.createTodo(props);
+  }
+  
   handleInitialize({ text, completed }) {
     this.props.initialize("todo", {
       text,
@@ -47,6 +54,7 @@ class TodoContainer extends Component {
 
 TodoContainer.propTypes = {
   initialize: PropTypes.func.isRequired,
+  createTodo: PropTypes.func.isRequired,
   todo: PropTypes.object,
   error: PropTypes.string,
 };
@@ -60,4 +68,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   initialize,
+  createTodo,
 })(TodoContainer);
