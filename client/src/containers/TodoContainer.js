@@ -1,67 +1,63 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { initialize } from 'redux-form';
-import { Alert } from 'react-bootstrap';
+import React, { Component, PropTypes } from "react";
+import { connect } from "react-redux";
+import { initialize } from "redux-form";
+import { Alert } from "react-bootstrap";
 
-import PageContainer from '../components/PageContainer';
-import Portlet from '../components/Portlet';
-import TodoForm from '../components/TodoForm';
+import PageContainer from "../components/PageContainer";
+import Portlet from "../components/Portlet";
+import TodoForm from "../components/TodoForm";
+import { fetchTodo, deleteTodo } from "../actions/index";
 
 class TodoContainer extends Component {
-
-
   handleInitialize({ text, completed }) {
-    this.props.initialize('todo', {
+    this.props.initialize("todo", {
       text,
-      completed
+      completed,
     });
   }
-
 
   renderAlert() {
     if (this.props.error) {
       return (
-          <div className="margin-top-25px">
-            <Alert bsStyle="danger">
-              <strong>Oops!</strong> {this.props.error}
-            </Alert>
-          </div>
+        <div className="margin-top-25px">
+          <Alert bsStyle="danger">
+            <strong>Oops!</strong> {this.props.error}
+          </Alert>
+        </div>
       );
     }
   }
 
   render() {
     return (
-        <PageContainer>
-          <Portlet title="Todo">
-            <div>
-              <TodoForm
-                  onSubmit={this.onSubmit.bind(this)}
-                  disableCompleted={!this.props.todo._id}
-              />
-            </div>
-            {this.renderAlert()}
-          </Portlet>
-        </PageContainer>
+      <PageContainer>
+        <Portlet title="Todo">
+          <div>
+            <TodoForm
+              onSubmit={this.onSubmit.bind(this)}
+              disableCompleted={!this.props.todo._id}
+            />
+          </div>
+          {this.renderAlert()}
+        </Portlet>
+      </PageContainer>
     );
   }
 }
 
 TodoContainer.propTypes = {
-
   initialize: PropTypes.func.isRequired,
   todo: PropTypes.object,
-  error: PropTypes.string
+  error: PropTypes.string,
 };
 
 function mapStateToProps(state) {
   return {
     todo: state.todos.todo,
-    error: state.todos.error
+    error: state.todos.error,
   };
 }
 
 export default connect(mapStateToProps, {
-
-  initialize
+  initialize,
 })(TodoContainer);
