@@ -12,7 +12,21 @@ import {
 
 const API_URL = 'http://localhost:3000';
 
-
+export function createTodo(props) {
+  return (dispatch) => {
+    axios.post(`${API_URL}/todos`, props)
+      .then(response => {
+        dispatch({
+          type: CREATE_TODO,
+          payload: response.data.todo
+        });
+        browserHistory.push('/');
+      })
+      .catch(error => {
+        dispatch(todoError(error.response.data.error));
+      });
+  };
+}
 
 export function todoError(error) {
   return (dispatch) => {
