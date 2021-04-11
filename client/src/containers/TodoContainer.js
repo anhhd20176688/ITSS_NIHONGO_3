@@ -15,6 +15,17 @@ class TodoContainer extends Component {
     }
     this.props.createTodo(props);
   }
+  componentWillMount() {
+    const id = this.props.location.query.id;
+
+    if (id) {
+      this.props.fetchTodo(id);   
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.handleInitialize(nextProps.todo);
+  }
   
   handleInitialize({ text, completed }) {
     this.props.initialize("todo", {
@@ -57,6 +68,8 @@ TodoContainer.propTypes = {
   createTodo: PropTypes.func.isRequired,
   todo: PropTypes.object,
   error: PropTypes.string,
+  fetchTodo: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -67,6 +80,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+  fetchTodo, 
+  updateTodo, 
   initialize,
   createTodo,
 })(TodoContainer);

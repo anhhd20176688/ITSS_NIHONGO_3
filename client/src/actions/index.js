@@ -53,3 +53,32 @@ export function todoError(error) {
     });
   };
 }
+export function fetchTodo(id) {
+  return (dispatch) => {
+    axios.get(`${API_URL}/todos/${id}`)
+      .then(response => {
+        dispatch({
+          type: FETCH_TODO,
+          payload: response.data.todo
+        })
+      })
+      .catch(error => {
+        dispatch(todoError(error.response.data.error));
+      });
+  };
+}
+export function updateTodo(id, props) {
+  return (dispatch) => {
+    axios.patch(`${API_URL}/todos/${id}`, props)
+      .then(response => {
+        dispatch({
+          type: UPDATE_TODO,
+          payload: response.data.todo
+        });
+        browserHistory.push('/');
+      })
+      .catch(error => {
+        dispatch(todoError(error.response.data.error));
+      });
+  };
+}
